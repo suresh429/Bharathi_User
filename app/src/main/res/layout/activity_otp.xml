@@ -20,8 +20,9 @@
 
         <ImageView
             android:id="@+id/logo_img"
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="100dp"
+            android:scaleType="centerCrop"
             android:layout_gravity="center"
             android:src="@drawable/placeholder" />
 
@@ -82,10 +83,10 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/bg_yellowbtn"
             android:text="Verify"
             android:textAllCaps="false"
-            android:textColor="@color/color_black"
+            android:textColor="@color/color_white"
             android:textSize="18sp"
             tools:ignore="MissingPrefix"
             />
@@ -102,5 +103,12 @@
             tools:ignore="MissingPrefix"
             />
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
     </RelativeLayout>
 </layout>

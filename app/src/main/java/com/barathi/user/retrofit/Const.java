@@ -23,5 +23,6 @@ public interface Const {
     String ProductID = "productid";
     String DB_NAME = "cartdatabase";
     String MOBILE_KEY = "mobile";
+    String OTP_KEY = "otp";
     int LIMIT = 10;
 }

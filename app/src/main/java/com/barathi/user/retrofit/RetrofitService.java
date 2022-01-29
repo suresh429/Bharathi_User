@@ -46,9 +46,20 @@ import retrofit2.http.PartMap;
 
 public interface RetrofitService {
 
+
+    @FormUrlEncoded
+    @POST("User/userLogin")
+    Call<User> loginUser(@Header("unique-key") String key,
+                         @Field("mobile_no") String mobile,
+                         @Field("device_type") String deviceType,
+                         @Field("device_token") String deviceToken
+    );
+
+
     @FormUrlEncoded
     @POST("User/registration")
     Call<User> registerUser(@Header("unique-key") String key,
+                            @Field("mobile_no") String mobile_no,
                             @Field("first_name") String firstName,
                             @Field("last_name") String lastName,
                             @Field("email") String email,
