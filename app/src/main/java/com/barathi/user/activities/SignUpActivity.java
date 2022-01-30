@@ -114,17 +114,18 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && Objects.requireNonNull(response.body()).getStatus() == 200) {
                     Log.d(TAG, "onResponse: " + new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-                   /* sessionManager.saveUser(response.body());
+
+                    sessionManager.saveUser(response.body());
                     sessionManager.saveBooleanValue(Const.IS_LOGIN, true);
                     sessionManager.saveStringValue(Const.USER_TOKEN, response.body().getData().getToken());
-*/
 
-                    String[] separated = response.body().getMessage().split(".");
-                    Log.d(TAG, "onResponse: " + separated[1].trim());
+                   /* String[] separated = response.body().getMessage().split(".");
+                    Log.d(TAG, "onResponse: " + separated[1].trim());*/
 
-                    Intent intent = new Intent(SignUpActivity.this, OTPActivity.class);
-                    intent.putExtra(MOBILE_KEY, mobile);
-                    intent.putExtra(OTP_KEY, separated[1].trim());
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                   /* intent.putExtra(MOBILE_KEY, mobile);
+                    intent.putExtra(OTP_KEY, separated[1].trim());*/
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 
                 } else {

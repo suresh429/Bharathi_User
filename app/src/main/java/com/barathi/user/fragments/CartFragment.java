@@ -192,9 +192,11 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             bottomSheetDialog.show();
             bottomSheetDialog.setCancelable(false);
             itemLoginBinding.btnLogin.setOnClickListener(v -> {
+                bottomSheetDialog.dismiss();
                 Intent intent = new Intent(requireActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+
             });
             itemLoginBinding.googlelogin.setOnClickListener(view -> {
                 binding.pBar.setVisibility(View.VISIBLE);
@@ -338,7 +340,7 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void registerUser(GoogleSignInAccount account) {
         Log.d(TAG, "registerUser: " + account.getPhotoUrl());
         String notificationToken = sessionManager.getStringValue(Const.NOTIFICATION_TOKEN);
-        Call<User> call = service.registerUser(Const.DEV_KEY,
+        Call<User> call = service.registerUser(Const.DEV_KEY,"",
                 account.getDisplayName(), account.getDisplayName(), account.getEmail(),
                 "gmail", account.getEmail(), "1", notificationToken, String.valueOf(account.getPhotoUrl())
         );

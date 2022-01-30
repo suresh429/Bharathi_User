@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Veggi</string>
+    <string name="app_name">Bharathi</string>
     <string name="title_activity_nav_drawer">NavDrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -45,4 +45,7 @@
 
     <string name="please_type_the_verification_code_sent_to_n_9xxxxxxx19">Please type the verification code sent to\n+9XXXXXXX19</string>
     <string name="verification_code">Verification Code</string>
+    <string name="enter_first_name">Enter First Name</string>
+    <string name="enter_last_name">Enter Last Name</string>
+    <string name="todo">TODO</string>
 </resources>

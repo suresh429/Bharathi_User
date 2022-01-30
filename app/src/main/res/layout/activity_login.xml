@@ -16,18 +16,18 @@
             android:id="@+id/logoimage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_margin="10dp"
             android:background="@color/colorPrimary"
             android:padding="20dp"
-            android:layout_margin="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/logoimage"
             android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_below="@+id/logoimage">
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,16 +36,14 @@
                 android:text="@string/login_caps"
                 android:textColor="#D8000000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                >
+                android:textStyle="bold">
 
             </TextView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/enter_your_phone_number_to_proceed"
-                >
+                android:text="@string/enter_your_phone_number_to_proceed">
 
             </TextView>
 
@@ -58,11 +56,10 @@
                     android:id="@+id/edt_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ems="10"
                     android:hint="@string/_10_digit_mobile_number"
                     android:inputType="phone"
-                    android:ems="10"
-                    android:maxLength="10"
-                    >
+                    android:maxLength="10">
 
                 </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
@@ -72,22 +69,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/bg_yellowbtn"
                 android:text="@string/enter_mobile_number"
                 android:textColor="@color/color_white"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:background="@drawable/bg_yellowbtn"
-                >
+                android:textStyle="bold">
 
             </Button>
 
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_margin="20dp"/>
+
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_circular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone"/>
+
     </RelativeLayout>
 </layout>

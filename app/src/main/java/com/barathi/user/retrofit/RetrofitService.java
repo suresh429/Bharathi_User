@@ -48,6 +48,14 @@ public interface RetrofitService {
 
 
     @FormUrlEncoded
+    @POST("User/checkotp")
+    Call<User> verifyOtp(@Header("unique-key") String key,
+                         @Field("mobile_no") String mobile,
+                         @Field("device_type") String deviceType,
+                         @Field("device_token") String deviceToken
+    );
+
+    @FormUrlEncoded
     @POST("User/userLogin")
     Call<User> loginUser(@Header("unique-key") String key,
                          @Field("mobile_no") String mobile,

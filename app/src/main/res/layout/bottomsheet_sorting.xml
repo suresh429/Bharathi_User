@@ -142,7 +142,7 @@
                     android:layout_marginVertical="10dp"
                     android:fontFamily="@font/gilroymedium"
                     android:text="Apply"
-                    android:textColor="@color/color_black"
+                    android:textColor="@color/color_white"
                     android:textSize="17sp" />
             </RelativeLayout>
 

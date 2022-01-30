@@ -33,7 +33,7 @@ import retrofit2.Response;
 
 public class OTPActivity extends AppCompatActivity {
     ActivityOtpBinding binding;
-    String deviceId, refreshedToken, otpText, mobile;
+    String deviceId, refreshedToken, otpValue,enterOtpValue, mobile;
     RetrofitService service;
     SessionManager sessionManager;
 
@@ -49,7 +49,7 @@ public class OTPActivity extends AppCompatActivity {
         //progressIndicator.start();
         if (getIntent() != null) {
             mobile = getIntent().getStringExtra(MOBILE_KEY);
-            otpText = getIntent().getStringExtra(OTP_KEY);
+            otpValue = getIntent().getStringExtra(OTP_KEY);
 
             char first = mobile.charAt(0);
             String substring = mobile.substring(Math.max(mobile.length() - 2, 0));
@@ -65,64 +65,27 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onOTPComplete(String otp) {
                 // fired when user has entered the OTP fully.
-                otpText = otp;
+                enterOtpValue = otp;
+                Log.d("TAG", "onOTPComplete: "+otp);
             }
         });
 
         binding.verifyBtn.setOnClickListener(v -> {
-            if ((otpText == null || otpText.equals("")) || otpText.length() != 6) {
+            if ((otpValue == null || otpValue.equals("")) || otpValue.length() != 6) {
                 Toast.makeText(OTPActivity.this, "Enter OTP to Verify", Toast.LENGTH_SHORT).show();
                 return;
-            } else {
-               // otpVerify();
+            } else if (!Objects.equals(enterOtpValue, otpValue)){
+                Toast.makeText(OTPActivity.this, "Enter Valid OTP", Toast.LENGTH_SHORT).show();
+                return;
+            }else {
+                Log.d("TAG", "onCreate: "+"valid");
+                sessionManager.saveBooleanValue(Const.IS_LOGIN, true);
+                Intent intent = new Intent(OTPActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
     }
 
-  /*  private void otpVerify() {
-        binding.progressCircular.setVisibility(View.VISIBLE);
-        String notificationToken = sessionManager.getStringValue(Const.NOTIFICATION_TOKEN);
-        Call<User> call = service.registerUser(Const.DEV_KEY, Objects.requireNonNull(binding.mobileEdt.getText()).toString(),
-                Objects.requireNonNull(binding.firstNameEdt.getText()).toString(), Objects.requireNonNull(binding.lastNameEdt.getText()).toString(), Objects.requireNonNull(binding.emailEdt.getText()).toString(),
-                "normal", Objects.requireNonNull(binding.emailEdt.getText()).toString(), "1", notificationToken, "");
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(@Nullable Call<User> call, @Nullable Response<User> response) {
-                binding.progressCircular.setVisibility(View.GONE);
-
-                assert response != null;
-
-                if (response.isSuccessful() && Objects.requireNonNull(response.body()).getStatus() == 200) {
-                    Log.d(TAG, "onResponse: " + new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-                   *//* sessionManager.saveUser(response.body());
-                    sessionManager.saveBooleanValue(Const.IS_LOGIN, true);
-                    sessionManager.saveStringValue(Const.USER_TOKEN, response.body().getData().getToken());
-*//*
-
-                    String[] separated = response.body().getMessage().split(".");
-                    Log.d(TAG, "onResponse: " + separated[1].trim());
-
-                    Intent intent = new Intent(SignUpActivity.this, OTPActivity.class);
-                    intent.putExtra(MOBILE_KEY, mobile);
-                    intent.putExtra(OTP_KEY, separated[1].trim());
-                    startActivity(intent);
-
-                } else {
-                    String errorMsg = new GsonBuilder().setPrettyPrinting().create().toJson(Objects.requireNonNull(response.body()).getMessage());
-                    Log.d(TAG, "onResponse Else: " + errorMsg);
-                    Toast.makeText(SignUpActivity.this, "" + errorMsg, Toast.LENGTH_SHORT).show();
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(@Nullable Call<User> call, @Nullable Throwable t) {
-                Log.d(TAG, "onFailure: " + t);
-                binding.progressCircular.setVisibility(View.GONE);
-
-            }
-        });
-    }*/
 
 }

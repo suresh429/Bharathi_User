@@ -1,6 +1,7 @@
 package com.barathi.user.activities;
 
 import static com.barathi.user.retrofit.Const.MOBILE_KEY;
+import static com.barathi.user.retrofit.Const.OTP_KEY;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,10 +39,11 @@ public class LoginActivity extends AppCompatActivity {
     SessionManager sessionManager;
     String errorMsg;
     private static final String TAG = "LoginActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  setContentView(R.layout.activity_login);
+        //  setContentView(R.layout.activity_login);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         service = RetrofitBuilder.create();
         sessionManager = new SessionManager(this);
@@ -85,13 +87,10 @@ public class LoginActivity extends AppCompatActivity {
 
         binding.btnContinue.setOnClickListener(v -> {
             if (!Objects.requireNonNull(binding.edtMobile.getText()).toString().isEmpty()) {
-               /* Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                intent.putExtra(MOBILE_KEY, Objects.requireNonNull(binding.edtMobile.getText()).toString());
-                startActivity(intent);*/
 
                 loginUser();
 
-            }else {
+            } else {
                 Toast.makeText(LoginActivity.this, "Enter Mobile no.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -102,28 +101,41 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser() {
         binding.progressCircular.setVisibility(View.VISIBLE);
         String notificationToken = sessionManager.getStringValue(Const.NOTIFICATION_TOKEN);
-        Call<User> call = service.loginUser(Const.DEV_KEY, Objects.requireNonNull(binding.edtMobile.getText()).toString(),  "1", notificationToken);
-       // Call<User> call = service.loginUser(Const.DEV_KEY, Objects.requireNonNull(binding.edtMobile.getText()).toString());
+        Call<User> call = service.loginUser(Const.DEV_KEY, Objects.requireNonNull(binding.edtMobile.getText()).toString(), "1", notificationToken);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@Nullable Call<User> call, @Nullable Response<User> response) {
                 binding.progressCircular.setVisibility(View.GONE);
                 Log.d(TAG, "onResponse: " + new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
 
-                if (response.isSuccessful() && Objects.requireNonNull(response.body()).getStatus() == 200) {
-                    Log.d(TAG, "onResponse: " + new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-//                    sessionManager.saveUser(response.body());
-//                    sessionManager.saveBooleanValue(Const.IS_LOGIN, true);
-//                    sessionManager.saveStringValue(Const.USER_TOKEN, response.body().getData().getToken());
-//
-                } else if (response.code() == 401){
-                     errorMsg = new GsonBuilder().setPrettyPrinting().create().toJson(Objects.requireNonNull(response.message()));
-                    Log.d(TAG, "onResponse Else: " + errorMsg);
-                    Toast.makeText(LoginActivity.this, ""+ errorMsg, Toast.LENGTH_SHORT).show();
-                }else {
-                    errorMsg = new GsonBuilder().setPrettyPrinting().create().toJson(Objects.requireNonNull(response.body()).getMessage());
-                    Log.d(TAG, "onResponse Else: " + errorMsg);
-                    Toast.makeText(LoginActivity.this, ""+ errorMsg, Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful() && response.code() == 200) {
+                    if (Objects.requireNonNull(response.body()).getStatus() == 200) {
+                        sessionManager.saveUser(response.body());
+                        /*  sessionManager.saveBooleanValue(Const.IS_LOGIN, true);*/
+                        sessionManager.saveStringValue(Const.USER_TOKEN, response.body().getData().getToken());
+
+                        String[] separated = response.body().getMessage().split("\\.");
+
+                        Intent intent = new Intent(LoginActivity.this, OTPActivity.class);
+                        intent.putExtra(MOBILE_KEY, binding.edtMobile.getText().toString());
+                        intent.putExtra(OTP_KEY, separated[1].trim());
+                        startActivity(intent);
+
+                    } else {
+                        errorMsg = new GsonBuilder().setPrettyPrinting().create().toJson(Objects.requireNonNull(response.body()).getMessage());
+                        Log.d(TAG, "onResponse: "+errorMsg);
+                        if (errorMsg.equalsIgnoreCase("This mobile number not valid")){
+                            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                            intent.putExtra(MOBILE_KEY, binding.edtMobile.getText().toString());
+                            startActivity(intent);
+                        }/*else {
+                            Toast.makeText(LoginActivity.this, "" + errorMsg, Toast.LENGTH_SHORT).show();
+                        }*/
+
+                    }
+                } else if (response.code() == 401) {
+                    errorMsg = new GsonBuilder().setPrettyPrinting().create().toJson(Objects.requireNonNull(response.message()));
+                    Toast.makeText(LoginActivity.this, "" + errorMsg, Toast.LENGTH_SHORT).show();
                 }
 
 

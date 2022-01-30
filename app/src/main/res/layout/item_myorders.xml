@@ -58,9 +58,9 @@
                 android:layout_below="@+id/tvProductName"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dp"
-                tools:text="Cenceled"
                 android:textColor="#BF0404"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="Cenceled" />
 
         </RelativeLayout>
     </LinearLayout>

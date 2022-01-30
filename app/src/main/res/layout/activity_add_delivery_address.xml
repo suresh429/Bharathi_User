@@ -422,7 +422,7 @@
                     android:gravity="center"
                     android:paddingVertical="10dp"
                     android:text="Add Address"
-                    android:textColor="@color/color_black" />
+                    android:textColor="@color/color_white" />
             </LinearLayout>
 
             <ProgressBar

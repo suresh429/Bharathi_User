@@ -59,7 +59,7 @@
                 android:background="@drawable/bg_yellowbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_black"
+                android:textColor="@color/color_white"
                 android:text="Defult"
                 android:id="@+id/tvDefult"
                 android:textSize="12sp" />

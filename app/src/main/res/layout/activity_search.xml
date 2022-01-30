@@ -26,15 +26,25 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-
-                    android:padding="5dp"
-                    app:tint="@color/color_black"
-                    android:onClick="onClickBack"
-                    android:layout_centerVertical="true"
                     android:id="@+id/img_aerrow_back"
                     android:layout_width="45dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/ic_sharp_arrow_back_24" />
+                    android:layout_centerVertical="true"
+                    android:onClick="onClickBack"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_sharp_arrow_back_24"
+                    app:tint="@color/color_black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/img_aerrow_back"
+                    android:layout_marginStart="10dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_black"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:layout_centerVertical="true"

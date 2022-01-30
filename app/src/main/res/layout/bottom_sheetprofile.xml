@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -128,7 +129,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -158,7 +159,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -188,7 +189,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -218,7 +219,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -248,7 +249,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -278,7 +279,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -308,7 +309,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -338,7 +339,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -368,7 +369,7 @@
                             android:layout_centerVertical="true"
                             android:rotation="270"
                             android:src="@drawable/ic_round_keyboard_arrow_down_24"
-                            android:tint="@color/color_black" />
+                            app:tint="@color/color_black" />
                     </RelativeLayout>
 
                 </LinearLayout>

@@ -46,6 +46,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.smarteist.autoimageslider.SliderAnimations;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -181,8 +182,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         categoriesCall.enqueue(new Callback<Categories>() {
             @Override
             public void onResponse(Call<Categories> call, Response<Categories> response) {
-                if(response.code() == 200) {
-                    if(response.body().getStatus() == 200 && !response.body().getData().isEmpty()) {
+                if(response.isSuccessful() && response.code() == 200) {
+                    if(Objects.requireNonNull(response.body()).getStatus() == 200 && !response.body().getData().isEmpty()) {
 
                         dataList = response.body();
                         categoryAdapter.updateData(dataList.getData());
@@ -341,7 +342,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void registerUser(GoogleSignInAccount account) {
         String notificationToken = sessionManager.getStringValue(Const.NOTIFICATION_TOKEN);
-        Call<User> call = service.registerUser(Const.DEV_KEY,
+        Call<User> call = service.registerUser(Const.DEV_KEY,"",
                 account.getDisplayName(), account.getDisplayName(), account.getEmail(),
                 "gmail", account.getEmail(), "1", notificationToken, String.valueOf(account.getPhotoUrl())
         );

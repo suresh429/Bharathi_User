@@ -67,19 +67,19 @@
                     tools:text="187 kshama soc hirabaug ak road surat dharamnagar hirabag " />
 
                 <TextView
-                    android:layout_marginVertical="5dp"
-                    android:layout_marginEnd="70dp"
-                    android:fontFamily="@font/gilroymedium"
                     android:id="@+id/tvDefult"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginEnd="70dp"
                     android:background="@drawable/bg_yellowbtn"
+                    android:fontFamily="@font/gilroymedium"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="2dp"
                     android:text="Default"
-                    android:textSize="12sp"
-                    android:textColor="@color/color_black" />
+                    android:textColor="@color/color_white"
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <TextView

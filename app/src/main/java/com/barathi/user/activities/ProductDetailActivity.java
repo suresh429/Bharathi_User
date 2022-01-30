@@ -97,19 +97,21 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
             @Override
             public void onResponse(@NonNull Call<ProductMain> call, @NonNull Response<ProductMain> response) {
                 ProductMain data = response.body();
-                if(data != null && data.getStatus() == 200) {
-                    product = data.getData().get(0);
+                if (response.isSuccessful() && response.code() ==200) {
+                    if (data != null && data.getStatus() == 200) {
+                        product = data.getData().get(0);
 
-                    initview();
-                    setData();
-                    if(product.getStockQuantity().equals("Out of Stock")) {
-                        isStock = false;
-                    } else {
-                        isStock = true;
+                        initview();
+                        setData();
+                        if (product.getStockQuantity().equals("Out of Stock")) {
+                            isStock = false;
+                        } else {
+                            isStock = true;
+                        }
+                        setPriceAdapter();
+                        initListnear();
+                        binding.pd.setVisibility(View.GONE);
                     }
-                    setPriceAdapter();
-                    initListnear();
-                    binding.pd.setVisibility(View.GONE);
                 }
                 binding.shimmer.setVisibility(View.GONE);
                 binding.lytmain.setVisibility(View.VISIBLE);
@@ -298,7 +300,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
     private void registerUser(GoogleSignInAccount account) {
         Log.d(TAG, "registerUser: " + account.getPhotoUrl());
         String notificationToken = sessionManager.getStringValue(Const.NOTIFICATION_TOKEN);
-        Call<User> call = service.registerUser(Const.DEV_KEY,
+        Call<User> call = service.registerUser(Const.DEV_KEY,"",
                 account.getDisplayName(), account.getDisplayName(), account.getEmail(),
                 "gmail", account.getEmail(), "1", notificationToken, String.valueOf(account.getPhotoUrl())
         );

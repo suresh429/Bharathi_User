@@ -188,7 +188,7 @@ public class NotificationFragment extends Fragment implements SwipeRefreshLayout
         if(photoUrl == null) {
             photoUrl = Uri.parse("");
         }
-        Call<User> call = service.registerUser(Const.DEV_KEY,
+        Call<User> call = service.registerUser(Const.DEV_KEY,"",
                 account.getDisplayName(), account.getDisplayName(), account.getEmail(),
                 "gmail", account.getEmail(), "1", notificationToken, String.valueOf(photoUrl)
         );

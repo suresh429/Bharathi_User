@@ -30,7 +30,7 @@
                 android:paddingVertical="2dp"
                 android:text="@{coupon.couponCode}"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorAccent"
                 android:textSize="18sp"
                 tools:text="xxxxxxxxx" />
 
@@ -91,6 +91,7 @@
             android:fontFamily="@font/gilroymedium"
             android:paddingHorizontal="10dp"
             android:paddingVertical="3dp"
+            android:textColor="@color/color_white"
             android:text="APPLY" />
 
         <View

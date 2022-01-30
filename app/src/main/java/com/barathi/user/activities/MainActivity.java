@@ -101,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
             circularBitmapDrawable.setCircular(true);
 
 
-            Glide.with(this)
+           /* Glide.with(this)
                     .load(Const.BASE_IMG_URL + user.getData().getProfileImage())
                     .circleCrop()
-                    //  .placeholder(circularBitmapDrawable)
-                    .into(binding.navToolbar.drawerImgProfile);
+                    .placeholder(circularBitmapDrawable)
+                    .into(binding.navToolbar.drawerImgProfile);*/
 
         }
     }

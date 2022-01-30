@@ -222,7 +222,7 @@ public class ComplainFragment extends Fragment implements SwipeRefreshLayout.OnR
         if(photoUrl == null) {
             photoUrl = Uri.parse("");
         }
-        Call<User> call = RetrofitBuilder.create().registerUser(Const.DEV_KEY,
+        Call<User> call = RetrofitBuilder.create().registerUser(Const.DEV_KEY,"",
                 account.getDisplayName(), account.getDisplayName(), account.getEmail(),
                 "gmail", account.getEmail(), "1", notificationToken, String.valueOf(photoUrl)
         );

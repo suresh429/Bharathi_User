@@ -134,7 +134,7 @@
                     android:gravity="center"
                     android:paddingVertical="10dp"
                     android:text="Have an Issue"
-                    android:textColor="@color/color_black"
+                    android:textColor="@color/color_white"
                     android:textSize="18sp" />
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -179,9 +179,9 @@
                 android:max="100" />
 
             <FrameLayout
+                android:id="@+id/frame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/frame" />
+                android:layout_height="match_parent" />
         </RelativeLayout>
     </FrameLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

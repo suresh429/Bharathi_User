@@ -148,7 +148,7 @@
                         android:gravity="center"
                         android:paddingVertical="10dp"
                         android:text="Proceed To Pay"
-                        android:textColor="@color/color_black" />
+                        android:textColor="@color/color_white" />
                 </LinearLayout>
 
             </LinearLayout>

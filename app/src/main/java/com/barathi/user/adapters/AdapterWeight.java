@@ -49,7 +49,7 @@ public class AdapterWeight extends RecyclerView.Adapter<AdapterWeight.WeightView
 
         String s = productadapterbinding.tvProductweight.getText().toString();
         if(unit.getUnit().equals(s)) {
-            holder.binding.text1.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            holder.binding.text1.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         } else {
             holder.binding.text1.setTextColor(ContextCompat.getColor(context, R.color.color_black));
         }
@@ -67,7 +67,7 @@ public class AdapterWeight extends RecyclerView.Adapter<AdapterWeight.WeightView
                 productadapterbinding.tvQuantity.setText(String.valueOf(quantity));
             }
             holder.resetColor();
-            holder.binding.text1.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            holder.binding.text1.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
             bottomSheetDialog.dismiss();
 
         });
