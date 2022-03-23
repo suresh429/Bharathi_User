@@ -41,6 +41,8 @@
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/gilroymedium"
                 android:textColor="@color/color_black"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:text="Potato" />
 
             <TextView

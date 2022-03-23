@@ -25,8 +25,11 @@
     <string name="move_from_wish_list">Remove From \n WishList</string>
 
 
-    <string name="map_key" translatable="true">---</string>
+    <string name="map_key" translatable="true">AIzaSyAVpTgrf6qi1n92PDrfcZ46mQQ_JMxFt88</string>
+<!--
     <string name="currency">$</string>
+-->
+    <string name="currency">\u20B9</string>
 
     <string name="contactno">18008901790</string>
     <string name="supportemail">Support@gmail.com</string>

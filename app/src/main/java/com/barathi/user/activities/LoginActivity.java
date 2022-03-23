@@ -121,16 +121,12 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra(OTP_KEY, separated[1].trim());
                         startActivity(intent);
 
-                    } else {
+                    } else if (Objects.requireNonNull(response.body()).getStatus() == 401){
                         errorMsg = new GsonBuilder().setPrettyPrinting().create().toJson(Objects.requireNonNull(response.body()).getMessage());
                         Log.d(TAG, "onResponse: "+errorMsg);
-                        if (errorMsg.equalsIgnoreCase("This mobile number not valid")){
-                            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                            intent.putExtra(MOBILE_KEY, binding.edtMobile.getText().toString());
-                            startActivity(intent);
-                        }/*else {
-                            Toast.makeText(LoginActivity.this, "" + errorMsg, Toast.LENGTH_SHORT).show();
-                        }*/
+                        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                        intent.putExtra(MOBILE_KEY, binding.edtMobile.getText().toString());
+                        startActivity(intent);
 
                     }
                 } else if (response.code() == 401) {

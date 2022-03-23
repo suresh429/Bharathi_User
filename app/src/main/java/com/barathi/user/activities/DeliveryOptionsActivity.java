@@ -1,5 +1,7 @@
 package com.barathi.user.activities;
 
+import static com.barathi.user.retrofit.Const.DEV_KEY;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -61,7 +63,7 @@ public class DeliveryOptionsActivity extends AppCompatActivity implements SwipeR
         binding.lyt404.setVisibility(View.GONE);
 
         RetrofitService service = RetrofitBuilder.create();
-        Call<Address> call = service.getAllAddress("gng!123", token);
+        Call<Address> call = service.getAllAddress(DEV_KEY, token);
         call.enqueue(new Callback<Address>() {
             @Override
             public void onResponse(Call<Address> call, Response<Address> response) {

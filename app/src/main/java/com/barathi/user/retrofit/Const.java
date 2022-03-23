@@ -1,8 +1,8 @@
 package com.barathi.user.retrofit;
 
 public interface Const {
-    String BASE_URL = "https://api.rapidgrow.live/api/";
-    String BASE_IMG_URL = "https://grocery.rapidgrow.live/public/uploads/";
+    String BASE_URL = "https://api.bharatimilkfoods.com/api/";
+    String BASE_IMG_URL = "https://bharatimilkfoods.com/portal/public/uploads/";
     String DEV_KEY = "barathi!123";
 
 
