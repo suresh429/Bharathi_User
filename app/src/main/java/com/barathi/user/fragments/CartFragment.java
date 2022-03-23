@@ -302,7 +302,8 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         totalPrice = 0;
         for(int j = 0; j <= list.size() - 1; j++) {
             CartOffline product = list.get(j);
-            long price = Long.parseLong(product.getPrice()) * product.getQuantity();
+            double priceDouble = Double.parseDouble(product.getPrice());
+            long price = (long)priceDouble * product.getQuantity();
             Log.d(TAG, "getTotalAmount: " + product.getPrice() + " * " + product.getQuantity());
             totalPrice = totalPrice + price;
         }
