@@ -53,7 +53,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.MyOrderV
         }
         holder.binding.btnCancel.setOnClickListener(v -> onOrderClickListnear.onOrderClick(data.get(position), true));
         holder.binding.tvItemCount.setText("Total Items: ".concat(String.valueOf(data.get(position).getTotalItem())));
-        holder.binding.tvItemPrice.setText("Amount: $".concat(String.valueOf(data.get(position).getTotalAmount())));
+        holder.binding.tvItemPrice.setText("Amount: "+context.getString(R.string.currency).concat(String.valueOf(data.get(position).getTotalAmount())));
 
         String dateStr = data.get(position).getOrderedAt();
         holder.binding.tvDate.setText(dateStr);

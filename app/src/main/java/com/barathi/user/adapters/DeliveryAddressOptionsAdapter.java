@@ -1,5 +1,6 @@
 package com.barathi.user.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class DeliveryAddressOptionsAdapter extends RecyclerView.Adapter<Delivery
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OptionsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OptionsViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Address.Datum address = data.get(position);
 
         holder.binding.radioBtn.setChecked(checkPos == position);

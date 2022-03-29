@@ -37,6 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.provider.MediaStore.MediaColumns.DATA;
+import static com.barathi.user.retrofit.Const.DEV_KEY;
 
 public class EditProfileActivity extends AppCompatActivity {
     private static final int GALLERY_CODE = 100;
@@ -160,7 +161,7 @@ public class EditProfileActivity extends AppCompatActivity {
         map.put("email", email);
 
 
-        Call<User> call = service.updateUser("gng!123", token, map, body);
+        Call<User> call = service.updateUser(DEV_KEY, token, map, body);
 
         call.enqueue(new Callback<User>() {
             @Override

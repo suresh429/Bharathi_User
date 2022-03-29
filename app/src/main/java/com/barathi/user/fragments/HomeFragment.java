@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.barathi.user.R;
 import com.barathi.user.SessionManager;
+import com.barathi.user.activities.MainActivity;
 import com.barathi.user.adapters.AdapterWeight;
 import com.barathi.user.adapters.CategoryAdapter;
 import com.barathi.user.adapters.SliderAdapterExample;
@@ -66,7 +67,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int start = 0;
     private Categories dataList;
     private boolean isLoding = true;
-
+    AppDatabase db;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,6 +88,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         getBannerData();
         initListener();
         binding.swipe.setOnRefreshListener(this);
+        db = Room.databaseBuilder(requireActivity(), AppDatabase.class, Const.DB_NAME).allowMainThreadQueries().build();
+
     }
 
     private void getBannerData() {
@@ -120,12 +123,13 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 } else if(work.equals("Google")) {
                     showGoogleSheet();
                 } else if(work.equals("addMore")) {
-
                     addToCart(product, priceUnit, binding, "plus", quantity);
+                    ((MainActivity) requireActivity()).cartCount(db.cartDao().getall().size());
+
                 } else if(work.equals("lessOne")) {
-
-
                     addToCart(product, priceUnit, binding, "minus", quantity);
+                    ((MainActivity) requireActivity()).cartCount(db.cartDao().getall().size());
+
 
                 }
             }
@@ -381,5 +385,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         getBannerData();
 
         binding.pBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).cartCount(db.cartDao().getall().size());
     }
 }

@@ -20,6 +20,7 @@ import com.barathi.user.R;
 import com.barathi.user.SessionManager;
 import com.barathi.user.activities.DeliveryOptionsActivity;
 import com.barathi.user.activities.LoginActivity;
+import com.barathi.user.activities.MainActivity;
 import com.barathi.user.adapters.CartAdapter;
 import com.barathi.user.dao.AppDatabase;
 import com.barathi.user.dao.CartOffline;
@@ -217,7 +218,7 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private long getCartdata(String id) {
         AppDatabase db = Room.databaseBuilder(requireActivity(),
                 AppDatabase.class, Const.DB_NAME).allowMainThreadQueries().build();
-        Log.d("qqqq1", "getCartdata: " + id);
+        Log.d("qqqq1", "getCartdata: " + db.cartDao().getall());
         if(!db.cartDao().getCartProduct(id).isEmpty()) {
             return db.cartDao().getCartProduct(id).get(0).getQuantity();
         } else {
@@ -239,7 +240,8 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             db.close();
             binding1.tvQuantity.setText(String.valueOf(quantity));
             Log.d(TAG, "addToCart: updated in cart" + quantity);
-            totalPrice = totalPrice + Long.parseLong(product.getPrice());
+            double priceDouble = Double.parseDouble(product.getPrice());
+            totalPrice = totalPrice + (long)priceDouble;
             binding.tvTotalPrice.setText(getString(R.string.currency) + String.valueOf(totalPrice));
         } else if(work.equals("less")) {
             long quantity = getCartdata(product.getPriceUnitId()) - 1;
@@ -253,7 +255,8 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             db.close();
             binding1.tvQuantity.setText(String.valueOf(quantity));
             Log.d(TAG, "addToCart: updated in cart" + quantity);
-            totalPrice = totalPrice - Long.parseLong(product.getPrice());
+            double priceDouble = Double.parseDouble(product.getPrice());
+            totalPrice = totalPrice - (long)priceDouble;
             binding.tvTotalPrice.setText(getString(R.string.currency) + String.valueOf(totalPrice));
         }
         binding.pBar.setVisibility(View.GONE);
@@ -272,6 +275,8 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         cartAdapter.removeItem(position);
         list.remove(product);
         getTotalAmount(list);
+        ((MainActivity) requireActivity()).cartCount(db.cartDao().getall().size());
+
     }
 
     private void getData() {

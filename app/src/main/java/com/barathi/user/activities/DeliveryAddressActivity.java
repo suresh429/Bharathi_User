@@ -1,5 +1,7 @@
 package com.barathi.user.activities;
 
+import static com.barathi.user.retrofit.Const.DEV_KEY;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,8 @@ import com.barathi.user.model.RestResponse;
 import com.barathi.user.retrofit.Const;
 import com.barathi.user.retrofit.RetrofitBuilder;
 import com.barathi.user.retrofit.RetrofitService;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,17 +62,17 @@ public class DeliveryAddressActivity extends AppCompatActivity implements SwipeR
         } else {
             binding.shimmer.startShimmer();
         }
-        Call<Address> call = service.getAllAddress("gng!123", token);
+        Call<Address> call = service.getAllAddress(DEV_KEY, token);
         call.enqueue(new Callback<Address>() {
             @Override
             public void onResponse(Call<Address> call, Response<Address> response) {
-                Log.d("TAG", "onResponse: " + response.code());
-                if(response.code() == 200) {
-                    addressAdapter.addData(response.body().getData());
+                Log.d("TAG", "onResponse: " + response.body().getData());
+                if(response.body().getData() != null && response.code() == 200 ) {
+                    addressAdapter.addData(Objects.requireNonNull(response.body()).getData());
                     binding.rvAddress.setAdapter(addressAdapter);
                     binding.swipe.setRefreshing(false);
                     binding.pBar.setVisibility(View.GONE);
-                    Log.d("TAG", "onResponse: " + response.body().getData().size());
+//                    Log.d("TAG", "onResponse: " + response.body().getData().size());
                 } else {
                     binding.lyt404.setVisibility(View.VISIBLE);
                 }
@@ -95,7 +99,7 @@ public class DeliveryAddressActivity extends AppCompatActivity implements SwipeR
                 binding.pBar.setVisibility(View.VISIBLE);
             }
             binding.pBar.setVisibility(View.VISIBLE);
-            Call<RestResponse> call = service.deleteDeliveryAddress(Const.DEV_KEY, token, datum.getDeliveryAddressId());
+            Call<RestResponse> call = service.deleteDeliveryAddress(DEV_KEY, token, datum.getDeliveryAddressId());
             call.enqueue(new Callback<RestResponse>() {
                 @Override
                 public void onResponse(Call<RestResponse> call, Response<RestResponse> response) {

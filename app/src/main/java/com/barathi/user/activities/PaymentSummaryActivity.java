@@ -465,7 +465,8 @@ public class PaymentSummaryActivity extends AppCompatActivity {
         subTotal = 0;
         for(int i = 0; i <= list.size() - 1; i++) {
             CartOffline product = list.get(i);
-            long price = Long.parseLong(product.getPrice()) * product.getQuantity();
+            double priceDouble = Double.parseDouble(product.getPrice());
+            long price = (long)priceDouble * product.getQuantity();
             Log.d(TAG, "getTotalAmount: " + product.getPrice() + " * " + product.getQuantity());
             subTotal = subTotal + price;
         }

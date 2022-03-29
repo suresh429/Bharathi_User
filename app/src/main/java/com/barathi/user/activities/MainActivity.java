@@ -1,5 +1,6 @@
 package com.barathi.user.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +23,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableInt;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 
 import com.barathi.user.R;
+import com.barathi.user.dao.AppDatabase;
 import com.barathi.user.databinding.ActivityMainBinding;
-import com.bumptech.glide.Glide;
 import com.barathi.user.SessionManager;
 import com.barathi.user.fragments.CartFragment;
 import com.barathi.user.fragments.ComplainFragment;
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     ObservableInt lastPos = new ObservableInt(0);
     private String title;
     SessionManager sessionManager;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        if(intent != null) {
+        if (intent != null) {
             String str = intent.getStringExtra("work");
             Log.d("TAG", "onCreate:intent " + str);
-            if(str != null) {
+            if (str != null) {
                 Log.d("TAG", "onCreate:notnull " + str);
-                if(str.equals("gotocart")) {
+                if (str.equals("gotocart")) {
                     Log.d("TAG", "onCreate:yes " + str);
                     loadFragment(new CartFragment());
                     binding.tvNavtitle.setText("Cart");
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUser() {
-        if(sessionManager.getBooleanValue(Const.IS_LOGIN)) {
+        if (sessionManager.getBooleanValue(Const.IS_LOGIN)) {
             User user = sessionManager.getUser();
             binding.navToolbar.drawerTvUname.setText(user.getData().getFirstName().concat(" " + user.getData().getLastName()));
             binding.navToolbar.drawerTvUmobile.setText(user.getData().getEmail());
@@ -108,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
                     .into(binding.navToolbar.drawerImgProfile);*/
 
         }
+
+        db = Room.databaseBuilder(this, AppDatabase.class, Const.DB_NAME).allowMainThreadQueries().build();
+        cartCount(db.cartDao().getall().size());
     }
 
     private void initView() {
@@ -184,48 +191,66 @@ public class MainActivity extends AppCompatActivity {
 
                 setDefultUI();
                 Fragment fragment = null;
-                switch(pos.get()) {
+                switch (pos.get()) {
                     case 1:
                         fragment = new HomeFragment();
                         title = "Home";
                         binding.appbarImgsearch.setVisibility(View.VISIBLE);
                         binding.appbarImgcart.setVisibility(View.VISIBLE);
+                        binding.txtCount.setVisibility(View.VISIBLE);
+
+
                         break;
                     case 2:
                         fragment = new CartFragment();
                         title = "Cart";
+                        binding.appbarImgcart.setVisibility(View.GONE);
+                        binding.txtCount.setVisibility(View.GONE);
+
 
                         break;
                     case 3:
                         fragment = new ProfileFragment();
                         title = "Profile";
+                        binding.txtCount.setVisibility(View.GONE);
+
                         break;
                     case 4:
                         fragment = new NotificationFragment();
                         title = "Notification";
+                        binding.txtCount.setVisibility(View.GONE);
+
                         break;
                     case 5:
                         fragment = new RatingFragment();
                         title = "Rating & Reviews";
+                        binding.txtCount.setVisibility(View.GONE);
+
                         break;
                     case 6:
                         fragment = new WishlistFragment();
                         binding.appbarImgcart.setVisibility(View.VISIBLE);
+                        binding.txtCount.setVisibility(View.VISIBLE);
+
                         title = "My Wishlist";
                         break;
                     case 7:
                         fragment = new ComplainFragment();
                         title = "Complains";
+                        binding.txtCount.setVisibility(View.GONE);
+
                         break;
                     case 8:
                         fragment = new FAQsFragment();
                         title = "FAQs";
+                        binding.txtCount.setVisibility(View.GONE);
+
                         break;
 
                     default:
                         throw new IllegalStateException("Unexpected value: " + pos.get());
                 }
-                if(pos.get() != lastPos.get()) {
+                if (pos.get() != lastPos.get()) {
                     loadFragment(fragment);
                     binding.tvNavtitle.setText(title);
                 }
@@ -257,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void closeDrawer() {
         binding.drawerLayout.closeDrawer(Gravity.LEFT);
-        if(pos.get() != lastPos.get()) {
+        if (pos.get() != lastPos.get()) {
             boldText();
             unBoldText();
         }
@@ -266,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
     private void boldText() {
         Typeface face = ResourcesCompat.getFont(this, R.font.gilroyextrabold);
 
-        switch(pos.get()) {
+        switch (pos.get()) {
             case 1:
                 binding.navToolbar.tvHome.setTypeface(face);
                 break;
@@ -301,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
     private void unBoldText() {
         Typeface face = ResourcesCompat.getFont(this, R.font.gilroymedium);
 
-        switch(lastPos.get()) {
+        switch (lastPos.get()) {
             case 1:
                 binding.navToolbar.tvHome.setTypeface(face);
                 break;
@@ -336,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(pos.get() == 1) {
+        if (pos.get() == 1) {
             super.onBackPressed();
             finish();
         } else {
@@ -346,5 +371,25 @@ public class MainActivity extends AppCompatActivity {
             binding.appbarImgcart.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void cartCount(int size) {
+        Log.d("TAG", "methodName: " + size);
+        TextView txt = findViewById(R.id.txtCount);
+
+        if (size != 0) {
+            txt.setText("" + size);
+            txt.setVisibility(View.VISIBLE);
+        }else {
+            txt.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("TAG", "onRestart: ");
+        cartCount(db.cartDao().getall().size());
     }
 }

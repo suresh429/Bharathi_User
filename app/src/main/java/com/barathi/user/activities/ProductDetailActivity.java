@@ -61,6 +61,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
     String userId = null;
     ProductMain.Datum product;
     private boolean isStock;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +69,17 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_detail);
         service = RetrofitBuilder.create();
         sessionManager = new SessionManager(this);
-        if(sessionManager.getBooleanValue(Const.IS_LOGIN)) {
+        if (sessionManager.getBooleanValue(Const.IS_LOGIN)) {
             userId = sessionManager.getUser().getData().getUserId();
         }
         getIntentData();
         binding.pd.setVisibility(View.GONE);
 
         binding.swipe.setOnRefreshListener(this);
+
+        MainActivity mActivity = new MainActivity();
+        db = Room.databaseBuilder(this, AppDatabase.class, Const.DB_NAME).allowMainThreadQueries().build();
+
     }
 
     private void
@@ -97,7 +102,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
             @Override
             public void onResponse(@NonNull Call<ProductMain> call, @NonNull Response<ProductMain> response) {
                 ProductMain data = response.body();
-                if (response.isSuccessful() && response.code() ==200) {
+                if (response.isSuccessful() && response.code() == 200) {
                     if (data != null && data.getStatus() == 200) {
                         product = data.getData().get(0);
 
@@ -133,8 +138,8 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
 
         binding.lytAddwishlist.setOnClickListener(v -> {
             boolean b = sessionManager.getBooleanValue(Const.IS_LOGIN);
-            if(b) {
-                if(product.getIsWishlist() == 1) {
+            if (b) {
+                if (product.getIsWishlist() == 1) {
                     removeFromWishlist();
                 } else {
                     addToWishlist();
@@ -158,7 +163,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
         call.enqueue(new Callback<RestResponse>() {
             @Override
             public void onResponse(@NonNull Call<RestResponse> call, @NonNull Response<RestResponse> response) {
-                if(response.body() != null && response.body().getStatus() == 200) {
+                if (response.body() != null && response.body().getStatus() == 200) {
                     binding.tvAddremoveToWishlist.setText(R.string.move_from_wish_list);
                     binding.imgwishlist.setImageDrawable(ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.heartfill));
                     product.setIsWishlist(1L);
@@ -179,7 +184,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
         call.enqueue(new Callback<RestResponse>() {
             @Override
             public void onResponse(@NonNull Call<RestResponse> call, @NonNull Response<RestResponse> response) {
-                if(response.body() != null && response.body().getStatus() == 200) {
+                if (response.body() != null && response.body().getStatus() == 200) {
                     binding.tvAddremoveToWishlist.setText("Add to Wishlist");
                     binding.imgwishlist.setImageDrawable(ContextCompat.getDrawable(ProductDetailActivity.this, R.drawable.heart));
 
@@ -196,19 +201,19 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
 
     private void setData() {
 
-        if(!product.getProductName().isEmpty() && !product.getProductName().equals("")) {
+        if (!product.getProductName().isEmpty() && !product.getProductName().equals("")) {
             binding.tvProductName.setText(product.getProductName());
         }
 
-        if(!product.getDescription().isEmpty() && !product.getDescription().equals("")) {
+        if (!product.getDescription().isEmpty() && !product.getDescription().equals("")) {
             binding.tvProductBenefits.setText(Html.fromHtml(product.getDescription()));
         } else {
             binding.tvReadmore.setVisibility(View.GONE);
         }
-        if(!product.getPriceUnit().get(0).getPrice().isEmpty() && !product.getPriceUnit().get(0).getPrice().equals("")) {
+        if (!product.getPriceUnit().get(0).getPrice().isEmpty() && !product.getPriceUnit().get(0).getPrice().equals("")) {
             binding.tvProductprice.setText(getString(R.string.currency).concat(product.getPriceUnit().get(0).getPrice()));
         }
-        if(product.getIsWishlist() == 1) {
+        if (product.getIsWishlist() == 1) {
             binding.tvAddremoveToWishlist.setText("Remove From \n Wishlist");
             binding.imgwishlist.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.heartfill));
         } else {
@@ -274,21 +279,21 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        if(requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             binding.pd.setVisibility(View.GONE);
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                if(account != null) {
+                if (account != null) {
                     registerUser(account);
                     Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                     Log.d(TAG, "firebaseAuthWithGoogle:" + account.getIdToken());
 
 
                 }
-            } catch(ApiException e) {
+            } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
                 // ...
@@ -300,17 +305,17 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
     private void registerUser(GoogleSignInAccount account) {
         Log.d(TAG, "registerUser: " + account.getPhotoUrl());
         String notificationToken = sessionManager.getStringValue(Const.NOTIFICATION_TOKEN);
-        Call<User> call = service.registerUser(Const.DEV_KEY,"",
+        Call<User> call = service.registerUser(Const.DEV_KEY, "",
                 account.getDisplayName(), account.getDisplayName(), account.getEmail(),
                 "gmail", account.getEmail(), "1", notificationToken, String.valueOf(account.getPhotoUrl())
         );
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@Nullable Call<User> call, @Nullable Response<User> response) {
-                if(response != null) {
+                if (response != null) {
                     sessionManager.saveUser(response.body());
                     sessionManager.saveBooleanValue(Const.IS_LOGIN, true);
-                    if(response.body() != null) {
+                    if (response.body() != null) {
                         sessionManager.saveStringValue(Const.USER_TOKEN, response.body().getData().getToken());
                     }
                     bottomSheetDialog.dismiss();
@@ -318,7 +323,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
                 }
                 service = RetrofitBuilder.create();
                 sessionManager = new SessionManager(ProductDetailActivity.this);
-                if(sessionManager.getBooleanValue(Const.IS_LOGIN)) {
+                if (sessionManager.getBooleanValue(Const.IS_LOGIN)) {
                     userId = sessionManager.getUser().getData().getUserId();
                 }
                 getIntentData();
@@ -338,14 +343,18 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
     @Override
     public void onPriceAdapterClick(ProductMain.PriceUnit unit, ItemProductPriceBinding binding, @NonNull String work) {
 
-        if(work.equals("addOne")) {
+
+        if (work.equals("addOne")) {
 
             binding.lytPlusMinus.setVisibility(View.VISIBLE);
             binding.tvAdd.setVisibility(View.GONE);
             addtoCart(unit, binding, "plus");
-        } else if(work.equals("lessOne")) {
+           // mActivity.cartCount(db.cartDao().getall().size());
+        } else if (work.equals("lessOne")) {
 
             addtoCart(unit, binding, "minus");
+            //mActivity.cartCount(db.cartDao().getall().size());
+
 
         }
     }
@@ -365,8 +374,8 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
         String price = unit.getPrice();
         String munit = unit.getUnit();
 
-        if(work.equals("plus")) {
-            if(oldquantity == 0) {
+        if (work.equals("plus")) {
+            if (oldquantity == 0) {
                 long quantity = oldquantity + 1;
                 CartOffline cartOffline = new CartOffline(productId, name, imageurl, priceunitid, quantity, price, munit);
                 db.cartDao().insertNew(cartOffline);
@@ -383,14 +392,14 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
                 binding1.tvQuantity.setText(String.valueOf(quantity));
                 Log.d(TAG, "addToCart: updated" + oldquantity);
             }
-        } else if(work.equals("minus")) {
+        } else if (work.equals("minus")) {
             Log.d(TAG, "addToCart: update");
-            if(oldquantity >= 0) {
+            if (oldquantity >= 0) {
                 long quantity = oldquantity - 1;
                 db.cartDao().updateObj(quantity, priceunitid);
                 db.close();
                 binding1.tvQuantity.setText(String.valueOf(quantity));
-                if(quantity == 0) {
+                if (quantity == 0) {
                     db.cartDao().deleteObjbyPid(priceunitid);
                     binding1.lytPlusMinus.setVisibility(View.GONE);
                     binding1.tvAdd.setVisibility(View.VISIBLE);
@@ -406,7 +415,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, Const.DB_NAME).allowMainThreadQueries().build();
         Log.d("qqqq1", "getCartdata: " + id);
-        if(!db.cartDao().getCartProduct(id).isEmpty()) {
+        if (!db.cartDao().getCartProduct(id).isEmpty()) {
             return db.cartDao().getCartProduct(id).get(0).getQuantity();
         } else {
             return 0;
@@ -426,7 +435,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductP
     }
 
     public void onClickReadMore(View view) {
-        if(binding.tvReadmore.getText().toString().equals("Read more...")) {
+        if (binding.tvReadmore.getText().toString().equals("Read more...")) {
             binding.tvReadmore.setText("Read less...");
             binding.tvProductBenefits.setMaxLines(20);
         } else {

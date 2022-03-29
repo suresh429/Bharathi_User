@@ -192,7 +192,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         Glide.with(binding.getRoot().getContext())
                 .load(Const.BASE_IMG_URL + user.getProfileImage())
                 .circleCrop()
-                //  .placeholder(circularBitmapDrawable)
+                .placeholder(circularBitmapDrawable)
                 .into(binding.imgprofile);
         binding.swipe.setRefreshing(false);
 
